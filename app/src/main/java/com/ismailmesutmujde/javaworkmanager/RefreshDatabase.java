@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
+import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -18,11 +19,13 @@ public class RefreshDatabase extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        refreshDatabase();
+        Data data = getInputData();
+        int myNumber = data.getInt("intKey", 0);
+        refreshDatabase(myNumber);
         return Result.success();
     }
 
-    private void refreshDatabase() {
+    private void refreshDatabase(int myNumber) {
         SharedPreferences sharedPreferences =myContext.getSharedPreferences("com.ismailmesutmujde.javaworkmanager", Context.MODE_PRIVATE);
         int mySavedNumber = sharedPreferences.getInt("myNumber",0);
         mySavedNumber = mySavedNumber + 1;

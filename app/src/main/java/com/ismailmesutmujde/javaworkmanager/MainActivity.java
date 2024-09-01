@@ -6,6 +6,7 @@ import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRequiresCharging(false)
                 .build();
 
+        /*
         // One Time Work Request
         WorkRequest workRequest = new OneTimeWorkRequest.Builder(RefreshDatabase.class)
                 .setConstraints(constraints)
@@ -32,7 +34,13 @@ public class MainActivity extends AppCompatActivity {
                 //.setInitialDelay(5, TimeUnit.MINUTES)
                 //.addTag("myTag")
                 .build();
+        */
 
+        // Periodic Work Request
+        WorkRequest workRequest = new PeriodicWorkRequest.Builder(RefreshDatabase.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .setInputData(data)
+                .build();
         WorkManager.getInstance(this).enqueue(workRequest);
     }
 }
